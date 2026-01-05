@@ -6,7 +6,6 @@
 
 import time
 from datetime import datetime
-from typing import Optional, Tuple
 
 import cv2
 import numpy as np
@@ -22,12 +21,12 @@ class ScreenCapture:
     """屏幕截取器：查找窗口并截取游戏画面"""
 
     def __init__(self):
-        self.hwnd: Optional[int] = None
-        self.game_region: Optional[Tuple[int, int, int, int]] = None
+        self.hwnd: int | None = None
+        self.game_region: tuple[int, int, int, int] | None = None
 
     def find_window(
-        self, title: Optional[str] = None, silent: bool = False
-    ) -> Optional[Tuple[int, int, int, int]]:
+        self, title: str | None = None, silent: bool = False
+    ) -> tuple[int, int, int, int] | None:
         """根据窗口标题查找窗口"""
         if title is None:
             title = config.WECHAT_WINDOW_TITLE
@@ -52,15 +51,15 @@ class ScreenCapture:
         if self.hwnd is None:
             return
         try:
-            win32gui.ShowWindow(self.hwnd, 9)
-            win32gui.SetForegroundWindow(self.hwnd)
+            _ = win32gui.ShowWindow(self.hwnd, 9)
+            _ = win32gui.SetForegroundWindow(self.hwnd)
             if not silent:
                 print("[初始化] 窗口已置前并聚焦")
         except Exception as e:
             if not silent:
                 print(f"[错误] 置前窗口失败: {e}")
 
-    def capture(self, save: bool = False, silent: bool = False) -> Optional[np.ndarray]:
+    def capture(self, save: bool = False, silent: bool = False) -> np.ndarray | None:
         """截取游戏画面"""
         if self.game_region is None:
             if self.find_window(silent=silent) is None:
@@ -86,6 +85,6 @@ if __name__ == "__main__":
     capture.pop_window()
     if region:
         print(f"找到窗口: {region}")
-        capture.capture()
+        _ = capture.capture()
     else:
         print("未找到窗口")

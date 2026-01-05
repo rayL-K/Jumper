@@ -6,7 +6,6 @@
 
 import random
 import time
-from typing import Optional, Tuple
 
 import pyautogui
 
@@ -18,14 +17,16 @@ pyautogui.FAILSAFE = False
 
 class MouseController:
     """鼠标控制器：执行跳跃长按操作"""
+
+    game_region: tuple[int, int, int, int] | None
     
-    def __init__(self, game_region: Optional[Tuple[int, int, int, int]] = None):
+    def __init__(self, game_region: tuple[int, int, int, int] | None = None):
         self.game_region = game_region
 
-    def set_game_region(self, region: Tuple[int, int, int, int]) -> None:
+    def set_game_region(self, region: tuple[int, int, int, int]) -> None:
         self.game_region = region
 
-    def get_click_position(self) -> Optional[Tuple[int, int]]:
+    def get_click_position(self) -> tuple[int, int] | None:
         """获取游戏区域内的随机点击位置"""
         if self.game_region is None:
             # 如果没设置区域，重新查找窗口并置前
@@ -76,7 +77,7 @@ class MouseController:
         for i in range(3, 0, -1):
             print(f"  {i}...")
             time.sleep(1)
-        self.jump(press_time_ms)
+        _ = self.jump(press_time_ms)
         print("[测试] 跳跃测试完成！")
 
 
